@@ -80,6 +80,8 @@
     .header-search {
         position: relative;
         width: 280px;
+        margin-right: 50px;
+
     }
 
     .search-input {
@@ -413,6 +415,31 @@
             align-self: center;
         }
     }
+    .header-actions a {
+        display: inline-block;
+        padding: 0.625rem 1rem;
+        background-color: var(--gray-200);
+        color: var(--gray-700);
+        border-radius: 0.375rem;
+        font-weight: 500;
+        font-size: 0.875rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        margin-left: 0.5rem;
+    }
+
+    .header-actions a:hover {
+        background-color: var(--gray-300);
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+        .header-actions a {
+            width: 100%;
+            text-align: center;
+            margin: 0.5rem 0;
+        }
+    }
 </style>
 
 <div class="dashboard-wrapper">
@@ -422,12 +449,6 @@
             <div class="header-content">
                 <h1 class="header-title">Trip Management</h1>
                 <div class="header-actions">
-                    <div class="header-search">
-                        <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                        <input type="text" class="search-input" placeholder="Search trips...">
-                    </div>
                 </div>
             </div>
             <p class="header-subtitle">Manage all Trips, update routes, prices, and travel times.</p>

@@ -12,11 +12,26 @@ class VoituresController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $cars = Voiture::paginate(10);
-        return view('Users.admin.voitures.index', compact('cars'));
-    }
+    public function index(Request $request)
+{
+    $search = $request->input('search');
+
+    $cars = Voiture::query()
+        ->when($search, function ($query, $search) {
+            return $query->where(function($q) use ($search) {
+                $q->where('marque', 'like', "%$search%")
+                  ->orWhere('modele', 'like', "%$search%")
+                  ->orWhere('annee', 'like', "%$search%")
+                  ->orWhere('etat', 'like', "%$search%")
+                  ->orWhere('prix', '=', $search); // Exact match for price
+            });
+        })
+        ->orderBy('created_at', 'desc') // Add default ordering
+        ->paginate(10)
+        ->appends(['search' => $search]); // Preserve search in pagination
+
+    return view('Users.admin.voitures.index', compact('cars'));
+}
 
     /**
      * Show the form for creating a new resource.

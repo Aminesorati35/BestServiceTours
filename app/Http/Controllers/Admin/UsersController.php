@@ -13,18 +13,40 @@ class UsersController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $user = Auth::user();
-        if($user->isSuperAdmin()){
-            $users = User::whereIn('role',['admin','client','superAdmin'])->where('role',"!=","superAdmin")->orderByRaw("FIELD(role, 'superAdmin', 'admin', 'client')")->paginate(10);
-        }else if($user->isAdmin()){
-            $users = User::where('role', 'client')->get();
-        } else{
-            abort(403, 'Unauthorized Access');
-        }
+{
+    $user = Auth::user();
+    $search = request('search');
 
-        return view ('Users.admin.users.index',compact('users'));
+    if($user->isSuperAdmin()) {
+        $users = User::whereIn('role', ['admin', 'client', 'superAdmin'])
+            ->where('role', "!=", "superAdmin")
+            ->when($search, function($query) use ($search) {
+                $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('telephone', 'like', "%{$search}%");
+                });
+            })
+            ->orderByRaw("FIELD(role, 'superAdmin', 'admin', 'client')")
+            ->paginate(10);
     }
+    else if($user->isAdmin()) {
+        $users = User::where('role', 'client')
+            ->when($search, function($query) use ($search) {
+                $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('telephone', 'like', "%{$search}%");
+                });
+            })
+            ->paginate(10); // Changed from get() to paginate() for consistency
+    }
+    else {
+        abort(403, 'Unauthorized Access');
+    }
+
+    return view('Users.admin.users.index', compact('users'));
+}
 
     /**
      * Show the form for creating a new resource.
