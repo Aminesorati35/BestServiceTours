@@ -769,7 +769,7 @@
                     </div>
                     <h3 class="empty-state-title">No Reservations Found</h3>
                     <p class="empty-state-description">You haven't made any travel reservations yet. Start planning your next trip today!</p>
-                    <a href="" class="btn btn-primary">
+                    <a href="{{ route('our-fleet') }}" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Book New Trip
                     </a>
                 </div>

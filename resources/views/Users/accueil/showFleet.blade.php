@@ -244,7 +244,7 @@
     <p> <span>Year :</span> {{ $voiture->annee  }}</p>
     <p> <span>Places :</span> {{ $voiture->nombre_places }}</p>
     <p> <span>Bagages :</span> {{ $voiture->nombre_bags }}</p>
-    <p> <span>Prix :</span> {{ $voiture->prix }}</p>
+    <p> <span>Price :</span> {{ $voiture->prix }}</p>
     <span>Status : {{ $voiture->etat }}</span>
 </div>
 </div>

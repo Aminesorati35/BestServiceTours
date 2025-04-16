@@ -231,8 +231,14 @@
 
                 <form action="{{ route('profile.destroy') }}" method="post">
                     @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-danger" >Delete Account</button>
+                    @method('DELETE')
+
+                    <div class="form-group">
+                        <label for="password">Confirm Password</label>
+                        <input type="password" name="password" id="password" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger">Delete Account</button>
                 </form>
             </div>
         </div>

@@ -47,7 +47,6 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
-        dd($user);
 
         Auth::logout();
 

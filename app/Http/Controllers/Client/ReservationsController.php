@@ -99,25 +99,52 @@ class ReservationsController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-{
-    $validated = $request->validate([
-        'trajet_id' => 'required|exists:trajets,id',
-        'voiture_id' => 'required|exists:voitures,id',
-        'date_reservation' => 'required|date',
-        'time_reservation'=>'required|date_format:H:i',
-        'nombre_personnes' => 'required|integer|min:1',
-        'nombre_bags' => 'required|integer|min:1',
-        'type_trajet' => 'required|in:one_way,round_trip',
-    ]);
-    $user = Auth::id();
-    $reservation = Reservation::where('id', $id)
-        ->where('user_id', $user)
-        ->firstOrFail();
-    //dd($validated);
-    $reservation->update($validated);
-    return redirect()->route('client.reservations.index')
-        ->with('success', 'Your reservation has been updated.');
-}
+    {
+        $request->validate([
+            'trajet_id' => 'required|exists:trajets,id',
+            'voiture_id' => 'required|exists:voitures,id',
+            'date_reservation' => 'required|date',
+            'time_reservation' => 'required|date_format:H:i',
+            'nombre_personnes' => 'required|integer|min:1',
+            'nombre_bags' => 'required|integer|min:1',
+            'type_trajet' => 'required|in:one_way,round_trip',
+        ]);
+
+        // Find the reservation
+        $reservation = Reservation::where('user_id', Auth::id())
+                        ->where('id', $id)
+                        ->firstOrFail();
+
+        // Recalculate the price (same logic as store method)
+        $trajet = Trajet::findOrFail($request->trajet_id);
+        $voiture = Voiture::findOrFail($request->voiture_id);
+
+        $prix_personne = 5;
+        $prix_bag = 2;
+        $prix_base = $trajet->prix + $voiture->prix;
+        $prix_personnes = $prix_personne * $request->nombre_personnes;
+        $prix_bags = $prix_bag * $request->nombre_bags;
+        $prix_total = $prix_base + $prix_personnes + $prix_bags;
+
+        if($request->type_trajet == 'round_trip') {
+            $prix_total *= 2;
+        }
+
+        // Update the reservation
+        $reservation->update([
+            'trajet_id' => $request->trajet_id,
+            'voiture_id' => $request->voiture_id,
+            'date_reservation' => $request->date_reservation,
+            'time_reservation' => $request->time_reservation,
+            'nombre_personnes' => $request->nombre_personnes,
+            'nombre_bags' => $request->nombre_bags,
+            'prix_total' => $prix_total,
+            'type_trajet' => $request->type_trajet,
+        ]);
+
+        return redirect()->route('client.reservations.index')
+            ->with('success', 'Reservation updated successfully');
+    }
 
     /**
      * Remove the specified resource from storage.
