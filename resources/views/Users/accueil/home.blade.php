@@ -698,7 +698,7 @@
 
             <div class="cta-buttons">
                 <a href="{{route('our-fleet')}}" class="btn-primary">View Our Fleet</a>
-                <a href="#" class="btn-secondary">Learn More</a>
+                <a href="{{ route('about') }}" class="btn-secondary">Learn More</a>
             </div>
         </div>
 
