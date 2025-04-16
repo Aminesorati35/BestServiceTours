@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/contact',function(){
     return view('Users.accueil.contact');
 })->name('contact');
-
+Route::post('/contact-send', 'App\Http\Controllers\ContactController@send')->name('contact.send');
 require __DIR__.'/auth.php';
 
 

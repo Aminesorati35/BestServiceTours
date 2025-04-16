@@ -180,53 +180,96 @@
                 padding: 14px 20px;
             }
         }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
     </style>
 
-    <div class="contact-section">
-        <div class="contact-title">
-            <h1>Get In Touch</h1>
-            <h5>We're ready to help with your questions and needs</h5>
-        </div>
+<div class="contact-section">
+    <div class="contact-title">
+        <h1>Get In Touch</h1>
+        <h5>We're ready to help with your questions and needs</h5>
+    </div>
 
-        <div class="contact-form">
-            <form action="">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" placeholder="Enter your full name">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="Enter your email address">
-                </div>
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" placeholder="What is this regarding?">
-                </div>
-                <div class="form-group">
-                    <label for="message">Your Message</label>
-                    <textarea id="message" placeholder="Please describe your message in detail..."></textarea>
-                </div>
-                <button type="submit" class="submit-button">Send Message</button>
-            </form>
+    <!-- Display success or error messages -->
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
         </div>
+    @endif
 
-        <div class="contact-info">
-            <div class="contact-info-item">
-                <div class="contact-info-icon">
-                    ✉️
-                </div>
-                <div class="contact-info-text">
-                    <a href="mailto:bestservicetrafic@gmail.com">bestservicetrafic@gmail.com</a>
-                </div>
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <!-- Display validation errors -->
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul style="margin: 0; padding-left: 20px;">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="contact-form">
+        <form action="{{ route('contact.send') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" value="{{ old('name') }}">
             </div>
-            <div class="contact-info-item">
-                <div class="contact-info-icon">
-                    📞
-                </div>
-                <div class="contact-info-text">
-                    <a href="tel:+212663337759">+212 663337759</a>
-                </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" value="{{ old('email') }}">
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" placeholder="What is this regarding?" value="{{ old('subject') }}">
+            </div>
+            <div class="form-group">
+                <label for="message">Your Message</label>
+                <textarea id="message" name="message" placeholder="Please describe your message in detail...">{{ old('message') }}</textarea>
+            </div>
+            <button type="submit" class="submit-button">Send Message</button>
+        </form>
+    </div>
+
+    <div class="contact-info">
+        <div class="contact-info-item">
+            <div class="contact-info-icon">
+                ✉️
+            </div>
+            <div class="contact-info-text">
+                <a href="mailto:bestservicetrafic@gmail.com">bestservicetrafic@gmail.com</a>
+            </div>
+        </div>
+        <div class="contact-info-item">
+            <div class="contact-info-icon">
+                📞
+            </div>
+            <div class="contact-info-text">
+                <a href="tel:+212663337759">+212 663337759</a>
             </div>
         </div>
     </div>
+</div>
 @endsection
