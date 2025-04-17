@@ -274,11 +274,25 @@
     .submit-wrapper {
         margin-top: 40px;
         grid-column: span 2;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .submit-wrapper a{
+        padding: 16px 30px;
+        color: white;
+        border-radius: 10px;
+        background-color: #808080dc;
+    }
+    .submit-wrapper a:hover{
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(221, 147, 35, 0.4);
+    box-shadow: 0 6px 20px rgba(221, 147, 35, 0.4);
     }
 
     .submit-button {
         display: block;
-        width: 100%;
+        width: 40%;
         padding: 16px 20px;
         background: linear-gradient(120deg, var(--primary) 0%, var(--primary-dark) 100%);
         color: var(--light);
@@ -551,6 +565,7 @@
                             <i class="fas fa-plus-circle" style="margin-right: 10px;"></i>
                             Add Fleet
                         </button>
+                        <a href="{{route('admin.voitures.index')}}">Back</a>
                     </div>
                 </div>
             </form>
