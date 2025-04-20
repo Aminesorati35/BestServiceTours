@@ -483,6 +483,29 @@
     </style>
 
     <div class="dashboard-container">
+        @if (session('success'))
+            <div class="alert alert-success">
+                <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div class="alert-content">
+                    <div class="alert-title">Success!</div>
+                    <div class="alert-message">{{ session('success') }}</div>
+                </div>
+            </div>
+            <script>
+                Swal.fire({
+                    title: 'Success!',
+                    text: "{{ session('success') }}",
+                    icon: 'success',
+                    iconColor: '#48BB78',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'btn-ok',
+                    }
+                });
+            </script>
+        @endif
         <div class="dashboard-header">
             <div>
                 <h1 class="dashboard-title">Reservation Management</h1>
